@@ -18,12 +18,12 @@ onMounted(async () => {
   );
   const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
     baseOptions: {
-      modelAssetPath:
-        "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task",
+      modelAssetPath: "/libras-alpha-v1.task",
       delegate: "GPU",
     },
     runningMode: "VIDEO",
     numHands: 2,
+    minHandPresenceConfidence: 0.6,
   });
 
   hasWebcam.value = !!(
@@ -86,26 +86,23 @@ onMounted(async () => {
 
 <template>
   <section>
-    <div>
-      <h1>Hello World!</h1>
-      <p v-if="hasWebcam">Camera is on</p>
+    <div id="header">
+      <h1>LIBRAS Alphabet</h1>
+      <p v-if="!hasWebcam">Waiting for camera</p>
     </div>
     <div id="row">
       <div id="video-container">
         <video autoplay playsinline></video>
         <canvas></canvas>
       </div>
-      <div
-        id="info"
-        v-if="data"
-        v-for="(hand, index) in data.gestures"
-        :key="index"
-      >
-        <p>
-          {{ data.handedness[index][0].displayName }} hand:
-          {{ hand[0].categoryName }}
-          {{ Math.round(hand[0].score * 10000) / 100 }}%
-        </p>
+      <div id="info">
+        <div v-if="data" v-for="(hand, index) in data.gestures" :key="index">
+          <p>
+            {{ data.handedness[index][0].displayName }} hand:
+            {{ hand[0].categoryName }}
+            {{ Math.round(hand[0].score * 10000) / 100 }}%
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -122,26 +119,42 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
 }
 
 p {
-  font-size: xx-large;
+  font-size: 24px;
+}
+
+#header {
+  text-align: center;
 }
 
 #video-container {
+  display: flex;
+  flex: 1;
   width: 960px;
   height: 720px;
 }
 
+#info {
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+  flex: 1;
+}
+
 #row {
+  display: flex;
   flex-direction: row;
+  box-sizing: content-box;
+  gap: 16px;
 }
 
 video {
-  position: absolute;
   transform: scaleX(-1);
   width: 960px;
   height: 720px;
