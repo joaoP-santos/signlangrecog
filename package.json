@@ -1,6 +1,6 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "libras-alpha",
+  "private": false,
   "type": "module",
   "scripts": {
     "build": "nuxt build",
@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^0.10.14",
     "nuxt": "^3.12.4",
     "vue": "latest"
   }
