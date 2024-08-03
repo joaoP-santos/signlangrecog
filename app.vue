@@ -50,7 +50,8 @@ const alpha = ref([
   "Y",
   "Z",
 ]);
-
+const displayLetter = ref(null);
+const currentLetter = ref([]);
 onMounted(async () => {
   const video = document.querySelector("video");
   const canvas = document.querySelector("canvas");
@@ -126,7 +127,7 @@ onMounted(async () => {
 
 <template>
   <section
-    class="flex flex-col justify-center items-center w-screen h-screen box-border bg-blue-50"
+    class="flex flex-col justify-center items-center w-screen h-screen box-border"
   >
     <div
       id="header"
@@ -135,15 +136,15 @@ onMounted(async () => {
       <h1 class="font-bold text-2xl">LIBRAS Alphabet</h1>
       <p v-if="!hasWebcam" class="text-lg">Waiting for camera</p>
     </div>
-    <div id="row" class="flex flex-row box-content gap-4">
-      <div id="video-container" class="flex-1 w-[960px] h-[720px]">
+    <div id="row" class="flex flex-row justify-center items-center gap-4">
+      <div id="video-container" class="flex box-content bg-blue-400">
         <video
           autoplay
           playsinline
-          class="w-full h-full transform -scale-x-50"
+          class="w-[960px] h-[720px] transform -scale-x-100"
         ></video>
         <canvas
-          class="absolute w-full h-full -scale-x-100 border border-black"
+          class="absolute w-[960px] h-[720px] -scale-x-100 border border-black"
         ></canvas>
       </div>
       <div id="info" class="flex flex-col w-[360px] flex-1">
@@ -161,11 +162,19 @@ onMounted(async () => {
           <span
             class="flex justify-center items-center bg-blue-500 text-white w-[50px] h-[50px]"
             v-for="(alpha, index) in alpha"
-            @click="console.log(alpha)"
+            @mouseenter="displayLetter = alpha"
+            @mouseleave="displayLetter = ''"
             :key="index"
             >{{ alpha }}</span
           >
         </div>
+        <img
+          v-if="displayLetter"
+          :src="`/images/libras/${displayLetter}.${
+            ['H', 'J', 'K', 'X', 'Z'].includes(displayLetter) ? 'jpg' : 'png'
+          }`"
+          class="w-24"
+        />
       </div>
     </div>
   </section>
