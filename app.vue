@@ -1,4 +1,19 @@
 <script setup>
+useHead({
+  title: "LIBRAS Alphabet",
+  meta: [
+    { name: "description", content: "LIBRAS Alphabet" },
+    { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+  ],
+});
+
+useSeoMeta({
+  title: "LIBRAS Alphabet",
+  ogTitle: "LIBRAS Alphabet",
+  description: "A real-time Brazilian Sign Language (LIBRAS) recognizer",
+  ogDescription: "A real-time Brazilian Sign Language (LIBRAS) recognizer",
+});
+
 import {
   DrawingUtils,
   FilesetResolver,
@@ -7,6 +22,35 @@ import {
 
 const hasWebcam = ref(null);
 const data = ref(null);
+const alpha = ref([
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+]);
+
 onMounted(async () => {
   const video = document.querySelector("video");
   const canvas = document.querySelector("canvas");
@@ -37,8 +81,6 @@ onMounted(async () => {
     });
   }
 
-  alert(hasWebcam.value);
-
   let lastVideoTime = -1;
 
   function processResult(result) {
@@ -64,8 +106,6 @@ onMounted(async () => {
       }
     }
 
-    console.log(result);
-
     ctx.restore();
   }
 
@@ -85,23 +125,46 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section>
-    <div id="header">
-      <h1>LIBRAS Alphabet</h1>
-      <p v-if="!hasWebcam">Waiting for camera</p>
+  <section
+    class="flex flex-col justify-center items-center w-screen h-screen box-border bg-blue-50"
+  >
+    <div
+      id="header"
+      class="text-center flex flex=col justify-center items-center"
+    >
+      <h1 class="font-bold text-2xl">LIBRAS Alphabet</h1>
+      <p v-if="!hasWebcam" class="text-lg">Waiting for camera</p>
     </div>
-    <div id="row">
-      <div id="video-container">
-        <video autoplay playsinline></video>
-        <canvas></canvas>
+    <div id="row" class="flex flex-row box-content gap-4">
+      <div id="video-container" class="flex-1 w-[960px] h-[720px]">
+        <video
+          autoplay
+          playsinline
+          class="w-full h-full transform -scale-x-50"
+        ></video>
+        <canvas
+          class="absolute w-full h-full -scale-x-100 border border-black"
+        ></canvas>
       </div>
-      <div id="info">
-        <div v-if="data" v-for="(hand, index) in data.gestures" :key="index">
-          <p>
-            {{ data.handedness[index][0].displayName }} hand:
-            {{ hand[0].categoryName }}
-            {{ Math.round(hand[0].score * 10000) / 100 }}%
-          </p>
+      <div id="info" class="flex flex-col w-[360px] flex-1">
+        <p
+          v-if="data"
+          v-for="(hand, index) in data.gestures"
+          :key="index"
+          class="text-lg"
+        >
+          {{ data.handedness[index][0].displayName }} hand:
+          {{ hand[0].categoryName }}
+          {{ Math.round(hand[0].score * 10000) / 100 }}%
+        </p>
+        <div id="alpha" class="flex flex-row flex-wrap w-full">
+          <span
+            class="flex justify-center items-center bg-blue-500 text-white w-[50px] h-[50px]"
+            v-for="(alpha, index) in alpha"
+            @click="console.log(alpha)"
+            :key="index"
+            >{{ alpha }}</span
+          >
         </div>
       </div>
     </div>
@@ -113,58 +176,5 @@ onMounted(async () => {
   margin: 0;
   padding: 0;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-}
-
-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
-}
-
-p {
-  font-size: 24px;
-}
-
-#header {
-  text-align: center;
-}
-
-#video-container {
-  display: flex;
-  flex: 1;
-  width: 960px;
-  height: 720px;
-}
-
-#info {
-  display: flex;
-  flex-direction: column;
-  width: 360px;
-  flex: 1;
-}
-
-#row {
-  display: flex;
-  flex-direction: row;
-  box-sizing: content-box;
-  gap: 16px;
-}
-
-video {
-  transform: scaleX(-1);
-  width: 960px;
-  height: 720px;
-}
-
-canvas {
-  position: absolute;
-  width: 960px;
-  height: 720px;
-  transform: scaleX(-1);
-  border: 1px solid black;
 }
 </style>
