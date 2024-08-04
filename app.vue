@@ -85,8 +85,7 @@ onMounted(async () => {
         video.addEventListener("loadeddata", renderLoop);
       })
       .catch((error) => {
-        console.error(error.message);
-        getCam();
+        alert(error.message);
       });
   }
 
@@ -170,34 +169,29 @@ onMounted(async () => {
   <section
     class="flex flex-col justify-center items-center w-screen h-screen box-border"
   >
-    <div
-      id="header"
-      class="text-center flex flex=col justify-center items-center"
-    >
-      <h1 class="font-bold text-2xl">LIBRAS Alphabet</h1>
-      <p v-if="!hasWebcam" class="text-lg">Waiting for camera</p>
-    </div>
     <div id="row" class="flex flex-row justify-center items-center gap-4">
       <div id="video-container" class="flex box-content">
         <video
           autoplay
           playsinline
-          class="w-[960px] h-[720px] transform -scale-x-100"
+          class="w-[720px] h-[540px] transform -scale-x-100"
         ></video>
         <canvas
-          class="absolute w-[960px] h-[720px] -scale-x-100 border border-black"
+          class="absolute w-[720px] h-[540px] -scale-x-100 border border-black"
         ></canvas>
       </div>
-      <div id="info" class="flex flex-col w-[360px] h-[720px] flex-1 gap-12">
+      <div id="info" class="flex flex-col w-[360px] h-[540px] flex-1">
+        <h1 class="font-bold text-3xl">LIBRAS Alphabet</h1>
+        <p v-if="!hasWebcam" class="text-lg">Waiting for camera</p>
         <div>
           <p v-for="(letter, index) in currentLetter" :key="index">
             {{ ["Left", "Right"][index] }} hand: {{ letter || "None" }}
             <Bar :width="`${(timers[index] * 100) / 20}`" />
           </p>
         </div>
-        <div id="alpha" class="flex flex-row flex-wrap w-full">
+        <div id="alpha" class="flex flex-row flex-wrap w-full mt-4 mb-4">
           <span
-            class="flex justify-center items-center bg-blue-500 text-white w-[50px] h-[50px]"
+            class="flex justify-center items-center bg-blue-500 text-white w-8 h-8"
             v-for="(alpha, index) in alpha"
             @mouseenter="displayLetter = alpha"
             @mouseleave="displayLetter = ''"
@@ -205,7 +199,7 @@ onMounted(async () => {
             >{{ alpha }}</span
           >
         </div>
-
+        <h1 class="text-2xl">History</h1>
         <p class="max-w-full break-words">{{ history }}</p>
 
         <img
@@ -215,6 +209,14 @@ onMounted(async () => {
           }`"
           class="w-48 self-center"
         />
+        <div class="flex-grow"></div>
+
+        <span class="justify-self-end self-end"
+          >Made by
+          <NuxtLink class="underline" to="https://github.com/joaoP-santos"
+            >joaoP-santos</NuxtLink
+          ></span
+        >
       </div>
     </div>
   </section>
@@ -225,9 +227,5 @@ onMounted(async () => {
   margin: 0;
   padding: 0;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-}
-
-p {
-  font-size: 1.5rem;
 }
 </style>
