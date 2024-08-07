@@ -1,3 +1,17 @@
+<script setup>
+useHead({
+  title: "Sign Language Recognition",
+  meta: [
+    { name: "description", content: "ASL Alphabet" },
+    { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+  ],
+});
+
+useSeoMeta({
+  title: "Sign Language Recognition",
+  ogTitle: "Sign Language Recognition",
+});
+</script>
 <template>
   <div
     class="flex flex-col gap-2 justify-center items-center self-center h-svh"

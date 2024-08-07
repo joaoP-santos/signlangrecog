@@ -8,12 +8,10 @@ useHead({
 });
 
 useSeoMeta({
-  title: "LIBRAS Alphabet",
-  ogTitle: "LIBRAS Alphabet",
-  description:
-    "A real-time American Sign Language (LIBRAS) alphabet recognizer",
-  ogDescription:
-    "A real-time American Sign Language (LIBRAS) alphabet recognizer",
+  title: "ASL Alphabet",
+  ogTitle: "ASL Alphabet",
+  description: "A real-time American Sign Language (ASL) alphabet recognizer",
+  ogDescription: "A real-time American Sign Language (ASL) alphabet recognizer",
 });
 
 import {
