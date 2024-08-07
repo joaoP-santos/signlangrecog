@@ -176,18 +176,21 @@ onMounted(async () => {
     class="flex flex-col justify-center items-center w-screen h-screen box-border"
   >
     <div id="row" class="flex flex-row justify-center items-center gap-4">
-      <div id="video-container" class="flex box-content">
+      <div id="video-container" class="flex flex-col box-content">
         <video
           autoplay
           playsinline
-          class="w-[720px] h-[540px] transform -scale-x-100"
+          class="max-h-[75vh] max-w-[50vw] transform -scale-x-100"
         ></video>
-        <canvas
-          class="absolute w-[720px] h-[540px] -scale-x-100 border border-black"
-        ></canvas>
+        <img
+          v-if="displayLetter"
+          :src="`/images/asl/${displayLetter}.jpg`"
+          class="absolute w-[10vw] self-center shadow-lg shadow-black"
+        />
       </div>
       <div id="info" class="flex flex-col w-[360px] h-[540px] flex-1">
         <h1 class="font-bold text-3xl">ASL Alphabet</h1>
+        <canvas class="-scale-x-100 border border-b-0 border-blue-600"></canvas>
         <div
           class="radio-inputs flex flex-wrap box-border border-blue-400 border-2 rounded-none w-full text-sm"
         >
@@ -228,11 +231,6 @@ onMounted(async () => {
         <h1 class="text-2xl">History</h1>
         <p class="max-w-full break-words">{{ history }}</p>
 
-        <img
-          v-if="displayLetter"
-          :src="`/images/asl/${displayLetter}.jpg`"
-          class="w-48 self-center"
-        />
         <div class="flex-grow"></div>
 
         <span class="justify-self-end self-end"
