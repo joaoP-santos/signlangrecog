@@ -87,7 +87,8 @@ onMounted(async () => {
     currentLetter.value[ind] = gestureName;
     timers.value[ind] = 0;
   }
-  function write(result) {
+  function write(result, time) {
+    if (time == undefined) return;
     for (var index = 0; index < 2; index++) {
       var gesture = result.gestures[index];
 
@@ -98,8 +99,9 @@ onMounted(async () => {
       }
 
       if (currentLetter.value[i] == gesture) {
-        timers.value[i] += 0.75;
-        if (timers.value[i] >= 20) {
+        timers.value[i] += time * 0.04;
+        console.log(time);
+        if (timers.value[i] >= 50) {
           if (gesture == "space") {
             history.value += " ";
           } else if (gesture == "del") {
@@ -141,20 +143,28 @@ onMounted(async () => {
 
     ctx.restore();
   }
-
+  let result = null;
   function renderLoop() {
-    if (video.currentTime !== lastVideoTime) {
-      const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(
-        video,
-        Date.now()
-      );
-      write(gestureRecognitionResult);
-      processResult(gestureRecognitionResult);
-      lastVideoTime = video.currentTime;
-    }
-
     requestAnimationFrame(renderLoop);
+
+    if (video.currentTime === lastVideoTime) return;
+    const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(
+      video,
+      Date.now()
+    );
+    write(gestureRecognitionResult);
+    processResult(gestureRecognitionResult);
+    lastVideoTime = video.currentTime;
+    result = gestureRecognitionResult;
   }
+
+  var start = Date.now();
+  setInterval(() => {
+    var delta = Date.now() - start; // milliseconds elapsed since start
+    write(result, delta); // in seconds
+    start = Date.now();
+    console.log(delta);
+  }, 10); // update about every second
 });
 </script>
 
@@ -183,7 +193,7 @@ onMounted(async () => {
         <div>
           <p v-for="(letter, index) in currentLetter" :key="index">
             {{ ["Left", "Right"][index] }} hand: {{ letter || "None" }}
-            <Bar :width="`${(timers[index] * 100) / 20}`" />
+            <Bar :width="`${(timers[index] * 100) / 50}`" />
           </p>
         </div>
         <div id="alpha" class="flex flex-row flex-wrap w-full mt-4 mb-4">
