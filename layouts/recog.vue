@@ -213,7 +213,9 @@ onMounted(async () => {
 
         <span class="justify-self-end self-end"
           >Made by
-          <NuxtLink class="underline" to="https://github.com/joaoP-santos"
+          <NuxtLink
+            class="underline"
+            to="https://www.linkedin.com/in/jo%C3%A3o-p-m-santos/"
             >joaoP-santos</NuxtLink
           ></span
         >

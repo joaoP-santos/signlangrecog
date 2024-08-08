@@ -17,12 +17,10 @@ useSeoMeta({
   ogDescription:
     "A real-time Brazilian Sign Language (LIBRAS) alphabet recognizer",
 });
-
-const modelAssetPath = "/libras-alpha-v1.task";
 </script>
 
 <template>
-  <NuxtLayout modelAssetPath="/libras-alpha-v1.task" imagesDir="libras"
+  <NuxtLayout modelAssetPath="/libras-alpha-v2.task" imagesDir="libras"
     >LIBRAS</NuxtLayout
   >
 </template>
