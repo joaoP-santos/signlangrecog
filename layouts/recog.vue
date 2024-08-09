@@ -7,6 +7,13 @@ import {
   GestureRecognizer,
 } from "@mediapipe/tasks-vision";
 
+import Groq from "groq-sdk";
+
+const groq = new Groq({
+  apiKey: process.env.LLM_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
+
 const hasWebcam = ref(null);
 const data = ref(null);
 const alpha = ref([
@@ -43,6 +50,46 @@ const displayLetter = ref(null);
 const currentLetter = ref([null, null]);
 const timers = ref([0, 0]);
 const history = ref("");
+
+const gestureRecognitionResult = ref(null);
+const answer = ref(null);
+
+const messages = ref([
+  {
+    role: "system",
+    content:
+      "Reply with a really short answer and with no punctuation, letters only.",
+  },
+]);
+
+async function sendMessage() {
+  console.log("im going");
+
+  if (history.value.length == 0) return;
+  messages.value.push({ role: "user", content: history.value });
+
+  history.value = "";
+
+  await groq.chat.completions
+    .create({
+      messages: messages.value,
+      model: "llama3-8b-8192",
+    })
+    .then(
+      (completion) => (answer.value = completion.choices[0]?.message?.content)
+    )
+    .catch((err) => alert(err.message));
+
+  alert(answer.value);
+
+  const showImages = setInterval(() => {
+    displayLetter.value = answer.value.charAt(0).toUpperCase();
+    answer.value = answer.value.slice(1);
+
+    if (answer.value.length == 0) clearInterval(showImages);
+  }, 1000);
+}
+
 onMounted(async () => {
   const video = document.querySelector("video");
   const canvas = document.querySelector("canvas");
@@ -100,7 +147,6 @@ onMounted(async () => {
 
       if (currentLetter.value[i] == gesture) {
         timers.value[i] += time * 0.04;
-        console.log(time);
         if (timers.value[i] >= 50) {
           if (gesture == "space") {
             history.value += " ";
@@ -143,28 +189,24 @@ onMounted(async () => {
 
     ctx.restore();
   }
-  let result = null;
   function renderLoop() {
     requestAnimationFrame(renderLoop);
 
     if (video.currentTime === lastVideoTime) return;
-    const gestureRecognitionResult = gestureRecognizer.recognizeForVideo(
+    gestureRecognitionResult.value = gestureRecognizer.recognizeForVideo(
       video,
       Date.now()
     );
-    write(gestureRecognitionResult);
-    processResult(gestureRecognitionResult);
+    processResult(gestureRecognitionResult.value);
     lastVideoTime = video.currentTime;
-    result = gestureRecognitionResult;
   }
 
   var start = Date.now();
   setInterval(() => {
-    var delta = Date.now() - start; // milliseconds elapsed since start
-    write(result, delta); // in seconds
+    var delta = Date.now() - start;
+    write(gestureRecognitionResult.value, delta);
     start = Date.now();
-    console.log(delta);
-  }, 10); // update about every second
+  }, 10);
 });
 </script>
 
@@ -208,7 +250,9 @@ onMounted(async () => {
         </div>
         <h1 class="text-2xl">History</h1>
         <p class="max-w-full break-words">{{ history }}</p>
-
+        <button @click="sendMessage()" class="bg-blue-500 text-white">
+          Send
+        </button>
         <div class="flex-grow"></div>
 
         <span class="justify-self-end self-end"
