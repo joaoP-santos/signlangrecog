@@ -215,7 +215,7 @@ onMounted(async () => {
           >Made by
           <NuxtLink
             class="underline"
-            to="https://www.linkedin.com/in/jo%C3%A3o-p-m-santos/"
+            to="https://github.com/joaoP-santos/signlangrecog"
             >joaoP-santos</NuxtLink
           ></span
         >
