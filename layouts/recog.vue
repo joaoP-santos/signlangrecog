@@ -9,11 +9,6 @@ import {
 
 import Groq from "groq-sdk";
 
-const groq = new Groq({
-  apiKey: process.env.LLM_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
-
 const hasWebcam = ref(null);
 const data = ref(null);
 const alpha = ref([
@@ -54,23 +49,21 @@ const history = ref("");
 const gestureRecognitionResult = ref(null);
 const answer = ref(null);
 
+const groq = ref(null);
 const messages = ref([
   {
     role: "system",
-    content:
-      "Reply with a really short answer and with no punctuation, letters only.",
+    content: "Talk without using any punctuation. Reply with 10 words at max",
   },
 ]);
 
 async function sendMessage() {
-  console.log("im going");
-
   if (history.value.length == 0) return;
   messages.value.push({ role: "user", content: history.value });
 
   history.value = "";
 
-  await groq.chat.completions
+  await groq.value.chat.completions
     .create({
       messages: messages.value,
       model: "llama3-8b-8192",
@@ -84,6 +77,7 @@ async function sendMessage() {
 
   const showImages = setInterval(() => {
     displayLetter.value = answer.value.charAt(0).toUpperCase();
+    if (displayLetter.value == " ") displayLetter.value = "spc";
     answer.value = answer.value.slice(1);
 
     if (answer.value.length == 0) clearInterval(showImages);
@@ -107,6 +101,12 @@ onMounted(async () => {
     runningMode: "VIDEO",
     numHands: 2,
     minHandPresenceConfidence: 0.6,
+  });
+
+  const config = useRuntimeConfig();
+  groq.value = new Groq({
+    apiKey: config.public.groqApiKey,
+    dangerouslyAllowBrowser: true,
   });
 
   hasWebcam.value = !!(
@@ -221,11 +221,12 @@ onMounted(async () => {
           playsinline
           class="max-h-[75vh] max-w-[50vw] transform -scale-x-100"
         ></video>
-        <img
+        <div
           v-if="displayLetter"
-          :src="`/images/${imagesDir}/${displayLetter}.jpg`"
           class="absolute w-[10vw] self-center shadow-lg shadow-black"
-        />
+        >
+          <img :src="`/images/${imagesDir}/${displayLetter}.jpg`" />
+        </div>
       </div>
       <div id="info" class="flex flex-col w-[360px] h-[540px] flex-1">
         <h1 class="font-bold text-3xl"><slot></slot> Alphabet</h1>

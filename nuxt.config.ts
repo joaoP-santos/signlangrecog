@@ -9,4 +9,9 @@ export default defineNuxtConfig({
       viewport: "width=device-width, initial-scale=1",
     },
   },
+  runtimeConfig: {
+    public: {
+      groqApiKey: process.env.NUXT_PUBLIC_GROQ_API_KEY,
+    },
+  },
 });
