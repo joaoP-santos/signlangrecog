@@ -5,18 +5,18 @@ import Footer from '~/components/Footer.vue';
 
 <template>
   <div>
-    <!-- Hero Section -->
+    <!-- Seção Hero -->
     <section class="bg-white text-black pt-12 pb-12">
       <div
         class="container mx-auto px-4 flex flex-col md:flex-row items-center md:items-center md:h-screen"
       >
-        <!-- Left Side: Text and Buttons -->
+        <!-- Lado Esquerdo: Texto e Botões -->
         <div class="w-full md:w-1/2 md:pr-8 text-center md:text-left">
           <h1 class="text-6xl font-light mb-6">
-            Let's start LIVE sign language recognition
+            Vamos iniciar o reconhecimento de linguagem de sinais AO VIVO
           </h1>
           <p class="text-xl mb-8">
-            But first, pick your language
+            Mas primeiro, escolha seu idioma
           </p>
           <div class="flex justify-center md:justify-start space-x-4">
             <NuxtLink
@@ -34,21 +34,21 @@ import Footer from '~/components/Footer.vue';
           </div>
         </div>
 
-        <!-- Right Side: Image -->
+        <!-- Lado Direito: Imagem -->
         <div class="w-full md:w-1/2 mt-8 md:mt-0">
           <img
             src="../public/icons/hero-image.png"
-            alt="Sign Language Illustration"
+            alt="Ilustração de Linguagem de Sinais"
             class="w-full h-auto"
           />
         </div>
       </div>
     </section>
 
-    <!-- Body Section -->
+    <!-- Seção Principal -->
     <section class="bg-white text-black py-12">
       <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-semibold mb-6">Welcome to Our App</h2>
+        <h2 class="text-4xl font-semibold mb-6">Bem-vindo ao Nosso Aplicativo</h2>
         <p class="text-lg mb-4">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -57,11 +57,11 @@ import Footer from '~/components/Footer.vue';
           Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
           nisi ut aliquip ex ea commodo consequat.
         </p>
-        <!-- Add more dummy text or content as needed -->
+        <!-- Adicione mais texto ou conteúdo conforme necessário -->
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Rodapé -->
     <Footer />
   </div>
 </template>
