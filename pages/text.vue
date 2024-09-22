@@ -48,6 +48,10 @@
         showHeart: false,      // For "I love you" sign
         showHangLoose: false, // For "thank you" sign
         showWave: false,       // For "hello" sign
+        
+        // Prediction Throttling Properties
+        lastPredictionTime: 0, // Timestamp of the last prediction
+        predictionCooldown: 5000, // 5 seconds in milliseconds
       };
     },
     methods: {
@@ -94,6 +98,16 @@
             this.sequence.shift(); // Maintain only the last 30 frames
           }
   
+          // Get the current timestamp
+          const currentTime = Date.now();
+  
+          // Check if enough time has passed since the last prediction
+          if (currentTime - this.lastPredictionTime < this.predictionCooldown) {
+            const remainingTime = Math.ceil((this.predictionCooldown - (currentTime - this.lastPredictionTime)) / 1000);
+            this.status = `Please wait ${remainingTime} more second(s) for the next prediction.`;
+            return; // Skip prediction
+          }
+  
           // Proceed with prediction if the sequence is complete
           if (this.model && this.sequence.length === 30) {
             const inputTensor = tf.tensor([this.sequence]);
@@ -104,6 +118,9 @@
             const confidence = res[maxIndex];
   
             console.log('Predicted action:', predictedAction, 'Confidence:', confidence);
+  
+            // Update the last prediction time
+            this.lastPredictionTime = currentTime;
   
             // Check if the prediction meets the confidence threshold
             if (confidence > this.threshold) {
@@ -130,9 +147,7 @@
               }
             } else {
               // Optionally, handle low-confidence predictions
-              // For example, you can reset the sentence or update the status
-              // this.sentence = [];
-              // this.status = 'No confident action detected.';
+              this.status = 'No confident action detected.';
             }
           }
         } catch (error) {
