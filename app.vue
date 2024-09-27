@@ -1,13 +1,14 @@
 <script setup lang="ts"></script>
 
 <template>
-  <NuxtPage />
+  <Body class="bg-primary">
+    <NuxtPage />
+  </Body>
 </template>
 
 <style>
 * {
   margin: 0;
   padding: 0;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 </style>

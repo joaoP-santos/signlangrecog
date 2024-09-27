@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed } from "vue";
 import {
   DrawingUtils,
   FilesetResolver,
@@ -151,7 +151,9 @@ onMounted(async () => {
 
             if (currentLetterIndex.value >= targetWord.value.length) {
               // Word completed
-              message.value = `Congratulations! You've completed the word "${targetWord.value.toUpperCase()}" and earned ${score.value} points.`;
+              message.value = `Congratulations! You've completed the word "${targetWord.value.toUpperCase()}" and earned ${
+                score.value
+              } points.`;
 
               // Reset for next word
               history.value = "";
@@ -228,10 +230,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="flex flex-col justify-center items-center w-screen h-screen box-border bg-gray-800">
-    <div id="row" class="flex flex-col md:flex-row justify-center items-center gap-4">
+  <section
+    class="flex flex-col justify-center items-center w-screen h-screen box-border"
+  >
+    <div
+      id="row"
+      class="flex flex-col md:flex-row justify-center items-center gap-4"
+    >
       <!-- Video Container -->
-      <div id="video-container" class="flex flex-col box-content relative w-80 h-80 overflow-hidden rounded">
+      <div
+        id="video-container"
+        class="flex flex-col box-content relative w-80 h-80 overflow-hidden rounded"
+      >
         <video
           autoplay
           playsinline
@@ -247,20 +257,33 @@ onMounted(async () => {
       </div>
 
       <!-- Info and Game Display -->
-      <div id="info" class="flex flex-col w-[360px] h-[540px] flex-1 text-white">
+      <div
+        id="info"
+        class="flex flex-col w-[360px] h-[540px] flex-1 text-white"
+      >
         <!-- Game Instructions -->
         <h1 class="font-bold text-3xl mb-4 text-center">
-          Type the word "<span class="text-green-400">{{ targetWord.toUpperCase() }}</span>" using sign language!
+          Type the word "<span class="text-green-400">{{
+            targetWord.toUpperCase()
+          }}</span
+          >" using sign language!
         </h1>
 
         <!-- Next Letter to Sign -->
         <p class="text-xl mb-2">
-          Next Letter: <span class="font-semibold text-green-400">{{ nextLetterDisplay }}</span>
+          Next Letter:
+          <span class="font-semibold text-green-400">{{
+            nextLetterDisplay
+          }}</span>
         </p>
 
         <!-- User Input and Score -->
-        <p class="text-xl mb-2">Your Input: <span class="font-semibold">{{ history }}</span></p>
-        <p class="text-xl mb-4">Score: <span class="font-semibold">{{ score }}</span></p>
+        <p class="text-xl mb-2">
+          Your Input: <span class="font-semibold">{{ history }}</span>
+        </p>
+        <p class="text-xl mb-4">
+          Score: <span class="font-semibold">{{ score }}</span>
+        </p>
 
         <!-- Message Display -->
         <p v-if="message" class="text-yellow-400 text-lg mb-4">{{ message }}</p>
@@ -268,13 +291,16 @@ onMounted(async () => {
         <!-- Current Recognized Letters and Timers -->
         <div class="mb-4">
           <p v-for="(letter, index) in currentLetter" :key="index">
-            {{ ["Left", "Right"][index] }} hand: <span class="font-semibold">{{ letter || "None" }}</span>
+            {{ ["Left", "Right"][index] }} hand:
+            <span class="font-semibold">{{ letter || "None" }}</span>
             <Bar :width="(timers[index] * 100) / 50" />
           </p>
         </div>
 
         <!-- Canvas for Drawing Landmarks -->
-        <canvas class="-scale-x-100 border border-blue-600 rounded-full w-80 h-80"></canvas>
+        <canvas
+          class="-scale-x-100 border border-blue-600 rounded-full w-80 h-80"
+        ></canvas>
 
         <!-- Alphabet Reference -->
         <div id="alpha" class="flex flex-row flex-wrap w-full mt-4 mb-4">
