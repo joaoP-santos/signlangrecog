@@ -1,5 +1,5 @@
 <template>
-  <nav class="w-full bg-primary fixed top-0 left-0 z-50">
+  <nav class="w-full bg-primary md:absolute top-0 left-0 z-50">
     <div class="container mx-auto px-4 py-4 flex items-center justify-between">
       <!-- Brand Name -->
       <NuxtLink to="/" class="w-8">
@@ -10,7 +10,7 @@
         <NuxtLink to="/login">Entrar</NuxtLink>
         <NuxtLink
           to="/signup"
-          class="bg-blue px-5 py-3 text-transparent text-bright rounded-sm"
+          class="bg-blue px-5 py-3 text-bright rounded-[4px]"
           >Comece</NuxtLink
         >
       </div>
