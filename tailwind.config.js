@@ -12,6 +12,7 @@ export default {
         default: "#000505",
         bright: "#F2FAFF",
         blue: "#0E34A0",
+        sunglow: "#FFD23F",
       },
       borderColor: {
         blue: "#0E34A0",

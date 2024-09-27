@@ -230,22 +230,23 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Navbar />
   <section
-    class="flex flex-col justify-center items-center w-screen h-screen box-border"
+    class="flex flex-col justify-center mt-[10vh] h-[90vh] items-center w-screen box-border"
   >
     <div
       id="row"
-      class="flex flex-col md:flex-row justify-center items-center gap-4"
+      class="flex flex-col md:flex-row px-24 justify-center items-center gap-4"
     >
       <!-- Video Container -->
       <div
         id="video-container"
-        class="flex flex-col box-content relative w-80 h-80 overflow-hidden rounded"
+        class="flex flex-col relative overflow-hidden flex-1 rounded"
       >
         <video
           autoplay
           playsinline
-          class="w-full h-full object-cover transform -scale-x-100"
+          class="w-full h-auto object-cover transform -scale-x-100"
         ></video>
         <!-- Display the expected sign image -->
         <img
@@ -257,36 +258,30 @@ onMounted(async () => {
       </div>
 
       <!-- Info and Game Display -->
-      <div
-        id="info"
-        class="flex flex-col w-[360px] h-[540px] flex-1 text-white"
-      >
+      <div id="info" class="flex flex-col w-full flex-1">
         <!-- Game Instructions -->
-        <h1 class="font-bold text-3xl mb-4 text-center">
-          Type the word "<span class="text-green-400">{{
-            targetWord.toUpperCase()
-          }}</span
-          >" using sign language!
+        <h1 class="font-medium text-2xl mb-4">
+          Digite a palavra
+          <span class="text-blue">{{ targetWord.toUpperCase() }}</span> usando
+          línguas de sinais!
         </h1>
 
         <!-- Next Letter to Sign -->
         <p class="text-xl mb-2">
-          Next Letter:
-          <span class="font-semibold text-green-400">{{
-            nextLetterDisplay
-          }}</span>
+          Próxima letra:
+          <span class="font-semibold text-blue">{{ nextLetterDisplay }}</span>
         </p>
 
         <!-- User Input and Score -->
-        <p class="text-xl mb-2">
-          Your Input: <span class="font-semibold">{{ history }}</span>
+        <p v-if="history" class="text-xl mb-2">
+          Progresso: <span class="font-semibold">{{ history }}</span>
         </p>
-        <p class="text-xl mb-4">
-          Score: <span class="font-semibold">{{ score }}</span>
+        <p v-if="score" class="text-xl mb-4">
+          Pontuação: <span class="font-semibold">{{ score }}</span>
         </p>
 
         <!-- Message Display -->
-        <p v-if="message" class="text-yellow-400 text-lg mb-4">{{ message }}</p>
+        <p v-if="message" class="text-sunglow text-lg mb-4">{{ message }}</p>
 
         <!-- Current Recognized Letters and Timers -->
         <div class="mb-4">
@@ -295,23 +290,6 @@ onMounted(async () => {
             <span class="font-semibold">{{ letter || "None" }}</span>
             <Bar :width="(timers[index] * 100) / 50" />
           </p>
-        </div>
-
-        <!-- Canvas for Drawing Landmarks -->
-        <canvas
-          class="-scale-x-100 border border-blue-600 rounded-full w-80 h-80"
-        ></canvas>
-
-        <!-- Alphabet Reference -->
-        <div id="alpha" class="flex flex-row flex-wrap w-full mt-4 mb-4">
-          <span
-            class="flex justify-center items-center bg-green-500 text-white w-8 h-8 m-1 cursor-pointer rounded-full"
-            v-for="(letter, index) in alpha"
-            @mouseenter="displayLetter = letter"
-            @mouseleave="displayLetter = ''"
-            :key="index"
-            >{{ letter }}</span
-          >
         </div>
       </div>
     </div>
