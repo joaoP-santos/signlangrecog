@@ -14,10 +14,12 @@
     "@mediapipe/drawing_utils": "^0.3.1675466124",
     "@mediapipe/holistic": "^0.5.1675471629",
     "@mediapipe/tasks-vision": "^0.10.14",
+    "@nuxt/fonts": "^0.9.2",
     "@nuxt/image": "^1.7.0",
+    "@nuxtjs/fontaine": "^0.4.3",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@tensorflow/tfjs": "^4.21.0",
-    "nuxt": "^3.12.4",
+    "nuxt": "^3.13.2",
     "react-webcam": "^7.2.0",
     "vue": "latest",
     "vue-web-cam": "^1.9.0"
