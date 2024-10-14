@@ -25,7 +25,7 @@ import Footer from "~/components/Footer.vue";
       <!-- Lado Direito: Imagem -->
       <div class="w-full md:w-1/2 mt-8 md:mt-0 justify-center">
         <NuxtImg
-          src="../public/images/sl-home.png"
+          src="../static/images/sl-home.png"
           alt="Ilustração de Linguagem de Sinais"
           class="w-auto h-full m-auto max-h-[70vh]"
         />
