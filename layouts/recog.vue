@@ -44,23 +44,20 @@
         <div id="info" class="flex flex-col w-full flex-1">
           <!-- Game Instructions -->
           <h1 class="font-medium text-2xl mb-4">
-            Digite a palavra
-            <span class="text-blue">{{ targetWord.toUpperCase() }}</span> usando
-            línguas de sinais!
+            Sign the letter
+            <span class="text-blue">{{ targetLetter.toUpperCase() }}</span> using
+            sign language!
           </h1>
 
-          <!-- Next Letter to Sign -->
+          <!-- Current Letter to Sign -->
           <p class="text-xl mb-2">
-            Próxima letra:
-            <span class="font-semibold text-blue">{{ nextLetterDisplay }}</span>
+            Current letter:
+            <span class="font-semibold text-blue">{{ targetLetter.toUpperCase() }}</span>
           </p>
 
-          <!-- User Progress and Score -->
-          <p v-if="history" class="text-xl mb-2">
-            Progresso: <span class="font-semibold">{{ history }}</span>
-          </p>
+          <!-- User Score -->
           <p v-if="score" class="text-xl mb-4">
-            Pontuação: <span class="font-semibold">{{ score }}</span>
+            Score: <span class="font-semibold">{{ score }}</span>
           </p>
 
           <!-- Message Display -->
@@ -105,6 +102,12 @@ const props = defineProps({
   },
 });
 
+// Function to Get a Random Letter
+function getRandomLetter() {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return letters.charAt(Math.floor(Math.random() * letters.length));
+}
+
 // Reactive Variables
 const hasWebcam = ref(false);
 const data = ref(null);
@@ -115,26 +118,17 @@ const alpha = ref([
 ]);
 
 // Game-related Reactive Variables
-const targetWord = ref("CopaColegial");
+const targetLetter = ref(getRandomLetter());
 const score = ref(0);
 const message = ref("");
-const history = ref("");
-
-// Current Letter Index
-const currentLetterIndex = ref(0);
 
 // Timers and Current Letters for Each Hand
 const currentLetter = ref([null, null]);
 const timers = ref([0, 0]);
 
 // Computed Properties
-const nextLetterDisplay = computed(() => {
-  const letter = targetWord.value.charAt(currentLetterIndex.value) || "";
-  return letter.toUpperCase();
-});
-
 const expectedLetterImage = computed(() => {
-  const letter = targetWord.value.charAt(currentLetterIndex.value);
+  const letter = targetLetter.value;
   if (letter) {
     return `/images/${props.imagesDir}/${letter.toUpperCase()}.jpg`;
   }
@@ -235,39 +229,25 @@ onMounted(async () => {
           timers.value[handIndex] += time * 0.04;
           if (timers.value[handIndex] >= 50) {
             // Expected Letter
-            const expectedLetter = targetWord.value
-              .charAt(currentLetterIndex.value)
-              .toUpperCase();
+            const expectedLetter = targetLetter.value.toUpperCase();
 
             if (gesture.toUpperCase() === expectedLetter) {
               // Correct Letter
-              history.value += gesture.toUpperCase();
               score.value += 1;
-              message.value = `Correct! You typed "${gesture.toUpperCase()}".`;
+              message.value = `Correct! You signed "${gesture.toUpperCase()}".`;
 
-              currentLetterIndex.value += 1;
+              // Set a new letter
+              targetLetter.value = getRandomLetter();
 
-              // Reset Timers
+              // Reset Timers and Current Letters
               timers.value = [0, 0];
-
-              if (currentLetterIndex.value >= targetWord.value.length) {
-                // Word Completed
-                message.value = `Congratulations! You've completed the word "${targetWord.value.toUpperCase()}" and earned ${score.value} points.`;
-
-                // Reset for Next Word
-                history.value = "";
-                currentLetterIndex.value = 0;
-                score.value = 0;
-
-                // Optionally, set a new word
-                // setNewWord();
-              }
+              currentLetter.value = [null, null];
             } else {
               // Incorrect Letter
-              message.value = `Incorrect. Expected "${expectedLetter}", but you signed "${gesture.toUpperCase()}". Try again from the beginning.`;
-              history.value = "";
-              currentLetterIndex.value = 0;
+              message.value = `Incorrect. Expected "${expectedLetter}", but you signed "${gesture.toUpperCase()}". Try again.`;
+              // Reset Timers and Current Letters
               timers.value = [0, 0];
+              currentLetter.value = [null, null];
             }
 
             define(handIndex, gesture);
